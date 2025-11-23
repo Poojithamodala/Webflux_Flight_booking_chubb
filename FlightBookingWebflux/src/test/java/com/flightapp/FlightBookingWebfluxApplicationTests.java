@@ -9,5 +9,9 @@ class FlightBookingWebfluxApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	
+	@Test
+    void mainMethodRuns() {
+        FlightBookingWebfluxApplication.main(new String[] {});
+    }
 }
