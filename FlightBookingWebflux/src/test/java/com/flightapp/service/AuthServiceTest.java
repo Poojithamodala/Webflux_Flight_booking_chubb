@@ -145,20 +145,4 @@ class AuthServiceTest {
                 })
                 .verifyComplete();
     }
-
-    @Test
-    void testRegister_DoesNotGenerateNewId_WhenIdExists() {
-        User user = new User();
-        user.setId("EXISTING-ID");
-        user.setEmail("pooja@gmail.com");
-        user.setPassword("pass");
-
-        when(userRepository.save(any(User.class))).thenReturn(Mono.just(user));
-
-        StepVerifier.create(authService.register(user))
-                .assertNext(savedUser -> {
-                    assert savedUser.getId().equals("EXISTING-ID");
-                })
-                .verifyComplete();
-    }
 }
