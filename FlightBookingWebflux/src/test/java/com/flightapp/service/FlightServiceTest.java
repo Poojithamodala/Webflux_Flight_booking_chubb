@@ -124,4 +124,71 @@ class FlightServiceTest {
 		StepVerifier.create(flightService.searchFlightsByAirline("BLR", "DEL", "Indigo")).expectNext(flight)
 				.verifyComplete();
 	}
+
+	@Test
+	void testUpdateFlight_UpdateFromAndToPlace() {
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("fromPlace", "HYD");
+		updates.put("toPlace", "MUM");
+
+		when(flightRepository.findById("1")).thenReturn(Mono.just(flight));
+		when(flightRepository.save(any(Flight.class))).thenReturn(Mono.just(flight));
+
+		StepVerifier.create(flightService.updateFlight("1", updates))
+				.expectNextMatches(
+						updated -> updated.getFromPlace().equals("HYD") && updated.getToPlace().equals("MUM"))
+				.verifyComplete();
+	}
+
+	@Test
+	void testUpdateFlight_UpdateDepartureTime() {
+		LocalDateTime newDeparture = LocalDateTime.now().plusDays(1);
+
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("departureTime", newDeparture.toString());
+
+		when(flightRepository.findById("1")).thenReturn(Mono.just(flight));
+		when(flightRepository.save(any(Flight.class))).thenReturn(Mono.just(flight));
+
+		StepVerifier.create(flightService.updateFlight("1", updates))
+				.expectNextMatches(updated -> updated.getDepartureTime().equals(newDeparture)).verifyComplete();
+	}
+
+	@Test
+	void testUpdateFlight_UpdateArrivalTime() {
+		LocalDateTime newArrival = LocalDateTime.now().plusDays(1).plusHours(3);
+
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("arrivalTime", newArrival.toString());
+
+		when(flightRepository.findById("1")).thenReturn(Mono.just(flight));
+		when(flightRepository.save(any(Flight.class))).thenReturn(Mono.just(flight));
+
+		StepVerifier.create(flightService.updateFlight("1", updates))
+				.expectNextMatches(updated -> updated.getArrivalTime().equals(newArrival)).verifyComplete();
+	}
+
+	@Test
+	void testUpdateFlight_UpdateTotalSeats() {
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("totalSeats", 150);
+
+		when(flightRepository.findById("1")).thenReturn(Mono.just(flight));
+		when(flightRepository.save(any(Flight.class))).thenReturn(Mono.just(flight));
+
+		StepVerifier.create(flightService.updateFlight("1", updates))
+				.expectNextMatches(updated -> updated.getTotalSeats() == 150).verifyComplete();
+	}
+
+	@Test
+	void testUpdateFlight_UpdateAvailableSeats() {
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("availableSeats", 80);
+
+		when(flightRepository.findById("1")).thenReturn(Mono.just(flight));
+		when(flightRepository.save(any(Flight.class))).thenReturn(Mono.just(flight));
+
+		StepVerifier.create(flightService.updateFlight("1", updates))
+				.expectNextMatches(updated -> updated.getAvailableSeats() == 80).verifyComplete();
+	}
 }
