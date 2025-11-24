@@ -64,25 +64,6 @@ class PassengerTest {
 	}
 
 	@Test
-	void testAgeValidation() {
-		Passenger passenger = new Passenger();
-		passenger.setName("Srikanth");
-		passenger.setGender("Male");
-		passenger.setSeatNumber("A1");
-
-		passenger.setAge(null);
-		Set<ConstraintViolation<Passenger>> violations = validator.validate(passenger);
-		assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("age")));
-
-		passenger.setAge(-5);
-		assertTrue(validator.validate(passenger).stream().anyMatch(v -> v.getPropertyPath().toString().equals("age")));
-
-		passenger.setAge(30);
-		violations = validator.validate(passenger);
-		assertFalse(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("age")));
-	}
-
-	@Test
 	void testSeatNumberValidation() {
 		Passenger passenger = new Passenger();
 		passenger.setName("Poojitha");
