@@ -29,25 +29,25 @@ public class FlightService {
 	}
 
 	public Mono<Flight> updateFlight(String id, Map<String, Object> updates) {
-	    return flightRepository.findById(id)
-	            .switchIfEmpty(Mono.error(new RuntimeException("Flight not found")))
-	            .flatMap(flight -> {
-	                updates.forEach((key, value) -> {
-	                    switch (key) {
-	                        case "airline" -> flight.setAirline((String) value);
-	                        case "fromPlace" -> flight.setFromPlace((String) value);
-	                        case "toPlace" -> flight.setToPlace((String) value);
-	                        case "departureTime" -> flight.setDepartureTime(LocalDateTime.parse((String) value));
-	                        case "arrivalTime" -> flight.setArrivalTime(LocalDateTime.parse((String) value));
-	                        case "price" -> flight.setPrice(((Number) value).intValue());
-	                        case "totalSeats" -> flight.setTotalSeats(((Number) value).intValue());
-	                        case "availableSeats" -> flight.setAvailableSeats(((Number) value).intValue());
-	                        default -> {
-	                        }
-	                    }
-	                });
-	                return flightRepository.save(flight);
-	            });
+		return flightRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException("Flight not found")))
+				.flatMap(flight -> {
+					updates.forEach((key, value) -> {
+						switch (key) {
+						case "airline" -> flight.setAirline((String) value);
+						case "fromPlace" -> flight.setFromPlace((String) value);
+						case "toPlace" -> flight.setToPlace((String) value);
+						case "departureTime" -> flight.setDepartureTime(LocalDateTime.parse((String) value));
+						case "arrivalTime" -> flight.setArrivalTime(LocalDateTime.parse((String) value));
+						case "price" -> flight.setPrice(((Number) value).intValue());
+						case "totalSeats" -> flight.setTotalSeats(((Number) value).intValue());
+						case "availableSeats" -> flight.setAvailableSeats(((Number) value).intValue());
+						default -> {
+							// Ignore this empty field
+						}
+						}
+					});
+					return flightRepository.save(flight);
+				});
 	}
 
 	public Flux<Flight> getAllFlights() {
