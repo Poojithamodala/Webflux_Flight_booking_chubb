@@ -14,12 +14,12 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
-public class FlightTest {
+class FlightTest {
 
 	private static Validator validator;
 
 	@BeforeAll
-	public static void setupValidator() {
+	static void setupValidator() {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
