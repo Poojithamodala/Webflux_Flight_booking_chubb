@@ -29,12 +29,12 @@ class PassengerServiceTest {
 
 		passenger1 = new Passenger();
 		passenger1.setId("P1");
-		passenger1.setName("John Doe");
+		passenger1.setName("Srikanth");
 		passenger1.setTicketId("T1");
 
 		passenger2 = new Passenger();
 		passenger2.setId("P2");
-		passenger2.setName("Jane Smith");
+		passenger2.setName("Pooja");
 		passenger2.setTicketId("T1");
 	}
 
