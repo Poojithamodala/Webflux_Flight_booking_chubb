@@ -25,12 +25,12 @@ public class GlobalErrorHandlerTest {
 	private GlobalErrorHandler errorHandler;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		errorHandler = new GlobalErrorHandler();
 	}
 
 	@Test
-	public void testHandleValidationExceptions_singleFieldError() {
+	void testHandleValidationExceptions_singleFieldError() {
 		BindingResult bindingResult = Mockito.mock(BindingResult.class);
 		FieldError fieldError = new FieldError("user", "name", "Name cannot be blank");
 		Mockito.when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
@@ -46,7 +46,7 @@ public class GlobalErrorHandlerTest {
 	}
 
 	@Test
-	public void testHandleValidationExceptions_multipleFieldErrors() {
+	void testHandleValidationExceptions_multipleFieldErrors() {
 		BindingResult bindingResult = Mockito.mock(BindingResult.class);
 		FieldError error1 = new FieldError("user", "name", "Name cannot be blank");
 		FieldError error2 = new FieldError("user", "email", "Email cannot be blank");
@@ -64,7 +64,7 @@ public class GlobalErrorHandlerTest {
 	}
 
 	@Test
-	public void testHandleValidationExceptions_noFieldErrors() {
+	void testHandleValidationExceptions_noFieldErrors() {
 		BindingResult bindingResult = Mockito.mock(BindingResult.class);
 		Mockito.when(bindingResult.getFieldErrors()).thenReturn(List.of());
 
@@ -75,7 +75,7 @@ public class GlobalErrorHandlerTest {
 	}
 
 	@ExceptionHandler(DuplicateKeyException.class)
-	public Mono<Map<String, String>> handleDuplicateKeyException(DuplicateKeyException ex) {
+	Mono<Map<String, String>> handleDuplicateKeyException(DuplicateKeyException ex) {
 
 		Map<String, String> errors = new HashMap<>();
 		String message = ex.getMessage();
@@ -90,7 +90,7 @@ public class GlobalErrorHandlerTest {
 	}
 
 	@Test
-	public void testHandleDuplicateKeyException_otherDuplicate() {
+	void testHandleDuplicateKeyException_otherDuplicate() {
 		DuplicateKeyException ex = new DuplicateKeyException("Duplicate key error: username already exists");
 
 		StepVerifier.create(errorHandler.handleDuplicateKeyException(ex)).assertNext(map -> {
@@ -101,7 +101,7 @@ public class GlobalErrorHandlerTest {
 
 	@Test
 	@ExceptionHandler(DuplicateKeyException.class)
-	public Mono<Map<String, String>> handleDuplicateKeyException1(DuplicateKeyException ex) {
+	Mono<Map<String, String>> handleDuplicateKeyException1(DuplicateKeyException ex) {
 		Map<String, String> errors = new HashMap<>();
 		String message = ex.getMessage();
 
@@ -117,7 +117,7 @@ public class GlobalErrorHandlerTest {
 	}
 
 	@Test
-	public void testHandleGeneralException_basic() {
+	void testHandleGeneralException_basic() {
 		Exception ex = new Exception("Some error");
 
 		StepVerifier.create(errorHandler.handleGeneralException(ex)).assertNext(map -> {
